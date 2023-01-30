@@ -4,9 +4,9 @@ import org.fusesource.jansi.Ansi;
 
 public enum LogLevel {
 
-    INFO    ("INFO" , Ansi.Color.DEFAULT, false),
-    WARNING ("WARN" , Ansi.Color.YELLOW , false),
-    ERROR   ("ERROR", Ansi.Color.RED    , true);
+    INFO("INFO", Ansi.Color.DEFAULT, false),
+    WARNING("WARN", Ansi.Color.YELLOW, false),
+    ERROR("ERROR", Ansi.Color.RED, true);
 
     public final String prefix;
     public final Ansi.Color color;
@@ -19,4 +19,3 @@ public enum LogLevel {
     }
 
 }
-

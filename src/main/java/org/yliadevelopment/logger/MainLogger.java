@@ -28,27 +28,25 @@ public class MainLogger implements Logger {
 
         ansi.fgBrightBlue().a("[").a(formatter.format(new Date())).a("] ").reset();
         ansi.fgBright(level.color).a(currentThreadName).a("/").a(level.prefix).a(": ");
-        
+
         if (!level.everythingColored)
             ansi.reset();
-        
+
         ansi.a(String.format(fmt, args)).reset().newline();
 
         AnsiConsole.out().print(ansi);
     }
 
-    public void info(String fmt, Object ...args) {
+    public void info(String fmt, Object... args) {
         this.log(LogLevel.INFO, fmt, args);
     }
 
-    public void warn(String fmt, Object ...args) {
+    public void warn(String fmt, Object... args) {
         this.log(LogLevel.WARNING, fmt, args);
     }
 
-    public void error(String fmt, Object ...args) {
+    public void error(String fmt, Object... args) {
         this.log(LogLevel.ERROR, fmt, args);
     }
-
-
 
 }
