@@ -10,6 +10,7 @@ public class YliaLauncher {
     static MainLogger logger = MainLogger.get();
 
     public static void main(String[] args) throws Exception {
+        logger.debug("Ylia - v1.0.0");
         if (args.length < 4) {
             logger.error("I need more arguments! <SERVER_ADDR> <SERVER_PORT> <PROXY_ADDR> <PROXY_PORT>");
             System.exit(1);
@@ -20,7 +21,7 @@ public class YliaLauncher {
         String proxyAddress = args[2];
         int proxyPort = Integer.parseInt(args[3]);
 
-        logger.info("Starting on %s:%d using %s:%d", serverAddress, serverPort, proxyAddress, proxyPort);
+        logger.info("Starting at %s:%d with %s:%d", proxyAddress, proxyPort, serverAddress, serverPort);
         var state = new State(serverAddress, serverPort, proxyAddress, proxyPort);
         var connector = new ProxyConnector(state);
         var server = new ProxyServer(state);
@@ -30,7 +31,7 @@ public class YliaLauncher {
 
         server.waitFinish();
         connector.waitFinish();
-        logger.info("Server has stopped!");
+        logger.warn("Server has stopped!");
     }
 
 }

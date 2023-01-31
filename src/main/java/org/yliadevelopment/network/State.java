@@ -1,15 +1,14 @@
 package org.yliadevelopment.network;
 
-import io.netty.channel.socket.DatagramPacket;
-
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class State {
-    public volatile ConcurrentLinkedQueue<DatagramPacket> connectorQueue = new ConcurrentLinkedQueue<>();
-    public volatile ConcurrentLinkedQueue<DatagramPacket> serverQueue = new ConcurrentLinkedQueue<>();
+    // TODO
+    public volatile ConcurrentLinkedQueue<Integer> connectorQueue = new ConcurrentLinkedQueue<>();
+    public volatile ConcurrentLinkedQueue<Integer> serverQueue = new ConcurrentLinkedQueue<>();
 
     public InetSocketAddress proxyAddress;
     public InetSocketAddress serverAddress;

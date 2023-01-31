@@ -3,10 +3,10 @@ package org.yliadevelopment.logger;
 import org.fusesource.jansi.Ansi;
 
 public enum LogLevel {
-
-    INFO("INFO", Ansi.Color.DEFAULT, false),
+    INFO("INFO", Ansi.Color.CYAN, false),
     WARNING("WARN", Ansi.Color.YELLOW, false),
-    ERROR("ERROR", Ansi.Color.RED, true);
+    ERROR("ERROR", Ansi.Color.RED, true),
+    DEBUG("DEBUG", Ansi.Color.DEFAULT, false);
 
     public final String prefix;
     public final Ansi.Color color;
