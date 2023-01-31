@@ -1,8 +1,11 @@
 package org.yliadevelopment;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import org.yliadevelopment.logger.MainLogger;
 import org.yliadevelopment.network.client.ProxyConnector;
+import org.yliadevelopment.network.server.ProxyServer;
+import org.yliadevelopment.network.server.handler.ProxyServerHandler;
 
 public class YliaLauncher {
 
@@ -23,10 +26,19 @@ public class YliaLauncher {
 
         logger.info("Started connection...");
         ProxyConnector connector = new ProxyConnector(serverAddress, serverPort);
-        ChannelFuture future = connector.startup();
-        future.channel().closeFuture().sync();
+        ProxyServer server = new ProxyServer(proxyAddress, proxyPort);
+
+        server.start();
+        connector.start();
+
+
         logger.info("Connected!");
+
+        connector.waitFinish();
+        server.waitFinish();
+
         connector.shutdown();
+        server.shutdown();
 
         logger.info("Server has stopped!");
     }

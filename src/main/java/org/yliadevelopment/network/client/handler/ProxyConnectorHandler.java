@@ -2,13 +2,11 @@ package org.yliadevelopment.network.client.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.socket.DatagramPacket;
 import org.yliadevelopment.logger.MainLogger;
-
-import java.net.DatagramPacket;
 
 public class ProxyConnectorHandler extends SimpleChannelInboundHandler<DatagramPacket> {
     MainLogger logger = MainLogger.get();
-
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
