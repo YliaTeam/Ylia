@@ -1,10 +1,10 @@
 package org.yliadevelopment.logger;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainLogger implements Logger {
 
@@ -27,7 +27,7 @@ public class MainLogger implements Logger {
         String currentThreadName = Thread.currentThread().getName();
 
         ansi.fgBrightBlue().a("[").a(formatter.format(new Date())).a("] ").reset();
-        ansi.fgBright(level.color).a(currentThreadName).a("/").a(level.prefix).a(": ");
+        ansi.fgBright(level.color).a(currentThreadName).a(" > ").a(level.prefix).a(": ");
 
         if (!level.everythingColored)
             ansi.reset();
@@ -49,4 +49,7 @@ public class MainLogger implements Logger {
         this.log(LogLevel.ERROR, fmt, args);
     }
 
+    public void debug(String fmt, Object... args) {
+        this.log(LogLevel.DEBUG, fmt, args);
+    }
 }

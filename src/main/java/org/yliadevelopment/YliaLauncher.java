@@ -9,7 +9,8 @@ public class YliaLauncher {
 
     static MainLogger logger = MainLogger.get();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
+        logger.debug("Ylia - v1.0.0");
         if (args.length < 4) {
             logger.error("I need more arguments! <SERVER_ADDR> <SERVER_PORT> <PROXY_ADDR> <PROXY_PORT>");
             System.exit(1);
@@ -22,7 +23,7 @@ public class YliaLauncher {
 
         socket.startListening();
 
-        logger.info("Server has stopped!");
+        logger.warn("Server has stopped!");
     }
 
 }

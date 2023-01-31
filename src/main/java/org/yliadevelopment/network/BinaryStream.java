@@ -1,11 +1,11 @@
 package org.yliadevelopment.network;
 
 public class BinaryStream {
-    
+
     private int offset = 0x00;
     private int pointer = 0x00;
     private byte[] buffer;
-    
+
     public BinaryStream() {
         this(new byte[0xff], 0x00);
     }
@@ -141,7 +141,7 @@ public class BinaryStream {
     public void writeBoolean(boolean b) {
         this.write(BinaryHelper.writeBoolean(b));
     }
-    
+
     public void writeUnsignedByte(byte b) {
         this.write(BinaryHelper.writeUnsignedByte(b));
     }
