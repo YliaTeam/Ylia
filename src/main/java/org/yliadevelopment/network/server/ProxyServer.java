@@ -21,7 +21,6 @@ public class ProxyServer implements IService {
         this.serverAddress = serverAddress;
     }
 
-
     public void start() {
         Bootstrap b = new Bootstrap()
                 .group(this.workerGroup)
@@ -36,7 +35,8 @@ public class ProxyServer implements IService {
             throw new RuntimeException("Not started");
         }
 
-        while (!this.channel.isDone()) {}
+        while (!this.channel.isDone()) {
+        }
     }
 
     public void shutdown() {

@@ -1,11 +1,8 @@
 package org.yliadevelopment;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import org.yliadevelopment.logger.MainLogger;
 import org.yliadevelopment.network.client.ProxyConnector;
 import org.yliadevelopment.network.server.ProxyServer;
-import org.yliadevelopment.network.server.handler.ProxyServerHandler;
 
 public class YliaLauncher {
 

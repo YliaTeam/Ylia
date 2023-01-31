@@ -5,8 +5,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
 import org.yliadevelopment.logger.MainLogger;
 
-public class ProxyServerHandler extends SimpleChannelInboundHandler<DatagramPacket>
-{
+public class ProxyServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
     MainLogger logger = MainLogger.get();
 
     @Override

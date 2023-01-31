@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.yliadevelopment.network.IService;
 import org.yliadevelopment.network.client.handler.ProxyConnectorHandler;
 
-public class ProxyConnector implements IService  {
+public class ProxyConnector implements IService {
     int port;
     String address;
     EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -29,11 +29,12 @@ public class ProxyConnector implements IService  {
     }
 
     public void waitFinish() {
-      if (this.channel == null) {
+        if (this.channel == null) {
             throw new RuntimeException("Not started");
         }
 
-      while (!this.channel.isDone()) {}
+        while (!this.channel.isDone()) {
+        }
     }
 
     public void shutdown() {

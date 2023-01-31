@@ -1,10 +1,10 @@
 package org.yliadevelopment.logger;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainLogger implements Logger {
 
