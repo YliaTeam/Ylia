@@ -2,22 +2,22 @@ package org.yliadevelopment.network.server;
 
 import org.yliadevelopment.network.IService;
 import org.yliadevelopment.network.State;
-
-import java.net.DatagramSocket;
-import java.net.SocketException;
+import org.yliadevelopment.network.raknet.RaknetSocket;
 
 public class ProxyServer implements IService {
-    DatagramSocket socket;
+    RaknetSocket socket;
     State state;
+    String threadName = "Proxy Server";
 
-    public ProxyServer(State state) throws SocketException {
+    public ProxyServer(State state) {
         this.state = state;
-        this.socket = new DatagramSocket(state.proxyAddress);
+        this.socket = new RaknetSocket(state.proxyAddress);
     }
 
     @Override
     public void waitFinish() {
-
+        while (true) {
+        }
     }
 
     @Override
@@ -25,8 +25,16 @@ public class ProxyServer implements IService {
 
     }
 
+    public Thread start() {
+        var thread = new Thread(this);
+        thread.setName("Proxy Server Thread");
+        thread.start();
+
+        return thread;
+    }
+
     @Override
     public void run() {
-
+        socket.startListening();
     }
 }

@@ -11,7 +11,7 @@ public class ProxyConnector implements IService {
     State state;
 
     public ProxyConnector(State state) throws SocketException {
-      this.state = state;
+        this.state = state;
     }
 
     @Override
@@ -21,7 +21,8 @@ public class ProxyConnector implements IService {
 
     @Override
     public void waitFinish() {
-
+        while (true) {
+        }
     }
 
     @Override

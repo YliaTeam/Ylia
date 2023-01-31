@@ -50,7 +50,7 @@ public class RaknetSocket {
             int packetId = stream.readUnsignedByte();
 
             if (!RaknetPacketList.PACKETS.containsKey(packetId)) {
-                logger.error("Packet id not handled: %d", packetId);
+                logger.warn("Packet id not handled: %d", packetId);
                 continue;
             }
 

@@ -3,7 +3,9 @@ package org.yliadevelopment;
 import java.net.InetSocketAddress;
 
 import org.yliadevelopment.logger.MainLogger;
+import org.yliadevelopment.network.State;
 import org.yliadevelopment.network.raknet.RaknetSocket;
+import org.yliadevelopment.network.server.ProxyServer;
 
 public class YliaLauncher {
 
@@ -16,13 +18,16 @@ public class YliaLauncher {
             System.exit(1);
         }
 
+        String serverAddress = args[0];
+        int serverPort = Integer.parseInt(args[1]);
         String proxyAddress = args[2];
         int proxyPort = Integer.parseInt(args[3]);
+        State state = new State(serverAddress, serverPort, proxyAddress, proxyPort);
 
-        RaknetSocket socket = new RaknetSocket(new InetSocketAddress(proxyAddress, proxyPort));
+        ProxyServer server = new ProxyServer(state);
+        server.start();
 
-        socket.startListening();
-
+        server.waitFinish();
         logger.warn("Server has stopped!");
     }
 
