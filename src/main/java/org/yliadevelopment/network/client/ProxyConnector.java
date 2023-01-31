@@ -6,6 +6,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.yliadevelopment.network.IService;
+import org.yliadevelopment.network.State;
 import org.yliadevelopment.network.client.handler.ProxyConnectorHandler;
 
 public class ProxyConnector implements IService {
@@ -13,9 +14,11 @@ public class ProxyConnector implements IService {
     String address;
     EventLoopGroup workerGroup = new NioEventLoopGroup();
     ChannelFuture channel;
+    State state;
 
-    public ProxyConnector(String address, int port) {
+    public ProxyConnector(State state, String address, int port) {
         this.port = port;
+        this.state = state;
         this.address = address;
     }
 
@@ -23,7 +26,7 @@ public class ProxyConnector implements IService {
         Bootstrap builder = new Bootstrap()
                 .group(this.workerGroup)
                 .channel(NioDatagramChannel.class)
-                .handler(new ProxyConnectorHandler());
+                .handler(new ProxyConnectorHandler(state));
 
         this.channel = builder.connect(this.address, this.port).channel().closeFuture();
     }
