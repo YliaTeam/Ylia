@@ -21,24 +21,15 @@ public class YliaLauncher {
         int proxyPort = Integer.parseInt(args[3]);
 
         logger.info("Starting on %s:%d using %s:%d", serverAddress, serverPort, proxyAddress, proxyPort);
-        logger.info("Started connection...");
         var state = new State(serverAddress, serverPort, proxyAddress, proxyPort);
-
-        ProxyConnector connector = new ProxyConnector(state, serverAddress, serverPort);
-        ProxyServer server = new ProxyServer(state, proxyAddress, proxyPort);
+        var connector = new ProxyConnector(state);
+        var server = new ProxyServer(state);
 
         server.start();
         connector.start();
 
-
-        logger.info("Connected!");
-
-        connector.waitFinish();
         server.waitFinish();
-
-        connector.shutdown();
-        server.shutdown();
-
+        connector.waitFinish();
         logger.info("Server has stopped!");
     }
 

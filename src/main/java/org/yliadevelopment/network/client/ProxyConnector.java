@@ -1,46 +1,31 @@
 package org.yliadevelopment.network.client;
 
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.yliadevelopment.network.IService;
 import org.yliadevelopment.network.State;
-import org.yliadevelopment.network.client.handler.ProxyConnectorHandler;
+
+import java.net.DatagramSocket;
+import java.net.SocketException;
 
 public class ProxyConnector implements IService {
-    int port;
-    String address;
-    EventLoopGroup workerGroup = new NioEventLoopGroup();
-    ChannelFuture channel;
+    public DatagramSocket socket = new DatagramSocket();
     State state;
 
-    public ProxyConnector(State state, String address, int port) {
-        this.port = port;
-        this.state = state;
-        this.address = address;
+    public ProxyConnector(State state) throws SocketException {
+      this.state = state;
     }
 
-    public void start() {
-        Bootstrap builder = new Bootstrap()
-                .group(this.workerGroup)
-                .channel(NioDatagramChannel.class)
-                .handler(new ProxyConnectorHandler(state));
+    @Override
+    public void run() {
 
-        this.channel = builder.connect(this.address, this.port).channel().closeFuture();
     }
 
+    @Override
     public void waitFinish() {
-        if (this.channel == null) {
-            throw new RuntimeException("Not started");
-        }
 
-        while (!this.channel.isDone()) {
-        }
     }
 
+    @Override
     public void shutdown() {
-        this.workerGroup.shutdownGracefully();
+
     }
 }

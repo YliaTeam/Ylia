@@ -1,47 +1,32 @@
 package org.yliadevelopment.network.server;
 
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.yliadevelopment.network.IService;
 import org.yliadevelopment.network.State;
-import org.yliadevelopment.network.server.handler.ProxyServerHandler;
+
+import java.net.DatagramSocket;
+import java.net.SocketException;
 
 public class ProxyServer implements IService {
-    String serverAddress;
-    int serverPort;
-
-    EventLoopGroup workerGroup = new NioEventLoopGroup();
-    ChannelFuture channel;
+    DatagramSocket socket;
     State state;
 
-    public ProxyServer(State state, String serverAddress, int serverPort) {
-        this.serverPort = serverPort;
-        this.serverAddress = serverAddress;
+    public ProxyServer(State state) throws SocketException {
         this.state = state;
+        this.socket = new DatagramSocket(state.proxyAddress);
     }
 
-    public void start() {
-        Bootstrap b = new Bootstrap()
-                .group(this.workerGroup)
-                .channel(NioDatagramChannel.class)
-                .handler(new ProxyServerHandler(state));
+    @Override
+    public void waitFinish() {
 
-        this.channel = b.bind(this.serverAddress, this.serverPort).channel().closeFuture();
     }
 
-    public void waitFinish() throws RuntimeException {
-        if (this.channel == null) {
-            throw new RuntimeException("Not started");
-        }
-
-        while (!this.channel.isDone()) {
-        }
-    }
-
+    @Override
     public void shutdown() {
+
+    }
+
+    @Override
+    public void run() {
 
     }
 }

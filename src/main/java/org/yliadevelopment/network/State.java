@@ -5,18 +5,17 @@ import io.netty.channel.socket.DatagramPacket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class State {
-    public volatile Queue<DatagramPacket> connectorQueue = new LinkedBlockingQueue<>();
-    public volatile Queue<DatagramPacket> serverQueue = new LinkedBlockingQueue<>();
+    public volatile ConcurrentLinkedQueue<DatagramPacket> connectorQueue = new ConcurrentLinkedQueue<>();
+    public volatile ConcurrentLinkedQueue<DatagramPacket> serverQueue = new ConcurrentLinkedQueue<>();
 
-    public InetSocketAddress target;
-    public InetSocketAddress source;
+    public InetSocketAddress proxyAddress;
+    public InetSocketAddress serverAddress;
 
-    public State(String sourceHost, int sourceTarget, String targetHost, int targetPort) throws UnknownHostException {
-        this.target = new InetSocketAddress(InetAddress.getByName(targetHost), targetPort);
-        this.source = new InetSocketAddress(InetAddress.getByName(sourceHost), sourceTarget);
+    public State(String serverHost, int serverPort, String proxyHost, int proxyPort) throws UnknownHostException {
+        this.proxyAddress = new InetSocketAddress(InetAddress.getByName(proxyHost), proxyPort);
+        this.serverAddress = new InetSocketAddress(InetAddress.getByName(serverHost), serverPort);
     }
 }
