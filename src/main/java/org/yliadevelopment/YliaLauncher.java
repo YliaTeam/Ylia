@@ -4,7 +4,8 @@ import io.netty.channel.ChannelFuture;
 import org.yliadevelopment.logger.MainLogger;
 import org.yliadevelopment.network.client.ProxyConnector;
 
-public class YliaApplication {
+public class YliaLauncher {
+
     static MainLogger logger = MainLogger.get();
 
     public static void main(String[] args) throws InterruptedException {
@@ -29,4 +30,5 @@ public class YliaApplication {
 
         logger.info("Server has stopped!");
     }
+
 }
