@@ -1,14 +1,15 @@
 package org.yliadevelopment;
 
-import io.netty.channel.ChannelFuture;
 import org.yliadevelopment.logger.MainLogger;
+import org.yliadevelopment.network.State;
 import org.yliadevelopment.network.client.ProxyConnector;
+import org.yliadevelopment.network.server.ProxyServer;
 
 public class YliaLauncher {
 
     static MainLogger logger = MainLogger.get();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         if (args.length < 4) {
             logger.error("I need more arguments! <SERVER_ADDR> <SERVER_PORT> <PROXY_ADDR> <PROXY_PORT>");
             System.exit(1);
@@ -20,14 +21,15 @@ public class YliaLauncher {
         int proxyPort = Integer.parseInt(args[3]);
 
         logger.info("Starting on %s:%d using %s:%d", serverAddress, serverPort, proxyAddress, proxyPort);
+        var state = new State(serverAddress, serverPort, proxyAddress, proxyPort);
+        var connector = new ProxyConnector(state);
+        var server = new ProxyServer(state);
 
-        logger.info("Started connection...");
-        ProxyConnector connector = new ProxyConnector(serverAddress, serverPort);
-        ChannelFuture future = connector.startup();
-        future.channel().closeFuture().sync();
-        logger.info("Connected!");
-        connector.shutdown();
+        server.start();
+        connector.start();
 
+        server.waitFinish();
+        connector.waitFinish();
         logger.info("Server has stopped!");
     }
 
