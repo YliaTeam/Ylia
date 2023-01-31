@@ -1,8 +1,9 @@
 package org.yliadevelopment;
 
-import io.netty.channel.ChannelFuture;
+import java.net.InetSocketAddress;
+
 import org.yliadevelopment.logger.MainLogger;
-import org.yliadevelopment.network.client.ProxyConnector;
+import org.yliadevelopment.network.raknet.RaknetSocket;
 
 public class YliaLauncher {
 
@@ -14,19 +15,12 @@ public class YliaLauncher {
             System.exit(1);
         }
 
-        String serverAddress = args[0];
-        int serverPort = Integer.parseInt(args[1]);
         String proxyAddress = args[2];
         int proxyPort = Integer.parseInt(args[3]);
 
-        logger.info("Starting on %s:%d using %s:%d", serverAddress, serverPort, proxyAddress, proxyPort);
+        RaknetSocket socket = new RaknetSocket(new InetSocketAddress(proxyAddress, proxyPort));
 
-        logger.info("Started connection...");
-        ProxyConnector connector = new ProxyConnector(serverAddress, serverPort);
-        ChannelFuture future = connector.startup();
-        future.channel().closeFuture().sync();
-        logger.info("Connected!");
-        connector.shutdown();
+        socket.startListening();
 
         logger.info("Server has stopped!");
     }
