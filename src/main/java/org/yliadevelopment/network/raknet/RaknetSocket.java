@@ -4,10 +4,10 @@ import java.net.DatagramSocket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
+import org.jetbrains.annotations.NotNull;
 import org.yliadevelopment.logger.MainLogger;
 import org.yliadevelopment.network.BinaryStream;
-import org.yliadevelopment.network.raknet.protocol.RaknetPacket;
-import org.yliadevelopment.network.raknet.protocol.RaknetPacketList;
+import org.yliadevelopment.network.raknet.handler.PacketHandler;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -31,12 +31,17 @@ public class RaknetSocket {
         }
     }
 
+    public void sendPacket(RaknetPacket raknetPacket, SocketAddress address) {
+        var packet = new DatagramPacket(raknetPacket.getBuffer(), raknetPacket.getBuffer().length);
+
+        this.socket.send(packet);
+    }
+
     public void startListening() {
-        byte[] buffer = new byte[0xFFFF];
-        DatagramPacket packet = null;
+        var buffer = new byte[0xFFFF];
 
         while (true) {
-            packet = new DatagramPacket(buffer, buffer.length);
+            var packet = new DatagramPacket(buffer, buffer.length);
 
             try {
                 this.socket.receive(packet);
@@ -45,42 +50,31 @@ public class RaknetSocket {
                 continue;
             }
 
-            BinaryStream stream = new BinaryStream(buffer);
+            var stream = new BinaryStream(buffer);
 
-            int packetId = stream.readUnsignedByte();
+            var packetId = stream.readUnsignedByte();
 
-            if (!RaknetPacketList.PACKETS.containsKey(packetId)) {
+            if (!RaknetPacket.PACKETS.containsKey(packetId)) {
                 logger.error("Packet id not handled: %d", packetId);
                 continue;
             }
 
-            var raknetPacketClazz = RaknetPacketList.PACKETS.get(packetId);
+            var raknetPacketClazz = RaknetPacket.PACKETS.get(packetId);
+            RaknetPacket raknetPacket;
 
             try {
-                var raknetPacket = raknetPacketClazz
+                raknetPacket = raknetPacketClazz
                     .getConstructor(byte[].class)
-                    .newInstance(buffer);
-                
-                raknetPacket.decode();
-
-                printDebugPacketInfo(raknetPacket);
+                    .newInstance((Object) buffer);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 logger.error("Could not instantiate %s: %s", raknetPacketClazz.getName(), e.toString());
                 continue;
             }
-        }
-    }
 
-    private void printDebugPacketInfo(RaknetPacket raknetPacket) {
-        for (Field f : raknetPacket.getClass().getDeclaredFields()) {
-            try {
-                f.setAccessible(true);
+            raknetPacket.decode();
 
-                logger.info("%s: %s = %s", raknetPacket.getClass().getName(), f.getName(), f.get(raknetPacket));
-            } catch (Exception ignore) {
-                continue;
-            }
+            PacketHandler.invokeHandlerFor(this, raknetPacket);
         }
     }
 }

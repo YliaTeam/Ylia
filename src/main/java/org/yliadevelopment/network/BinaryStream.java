@@ -1,5 +1,7 @@
 package org.yliadevelopment.network;
 
+import java.nio.charset.StandardCharsets;
+
 public class BinaryStream {
 
     private int offset = 0x00;
@@ -128,6 +130,18 @@ public class BinaryStream {
         return BinaryHelper.readLDouble(this.read(8));
     }
 
+    public String readString() {
+        var size = this.readShort();
+
+        return new String(this.read(size));
+    }
+
+    public String readStringIntLe() {
+        var size = this.readLInt();
+
+        return new String(this.read(size));
+    }
+
     public void write(byte b) {
         this.buffer[this.pointer++] = b;
     }
@@ -184,6 +198,22 @@ public class BinaryStream {
 
     public void writeLDouble(double d) {
         this.write(BinaryHelper.writeLDouble(d));
+    }
+
+    public void writeString(String s) {
+        var size = (short) s.length();
+        var data = s.getBytes();
+
+        this.writeShort(size);
+        this.write(data);
+    }
+
+    public void writeStringIntLe(String s) {
+        var size = s.length();
+        var data = s.getBytes();
+
+        this.writeLInt(size);
+        this.write(data);
     }
 
 }

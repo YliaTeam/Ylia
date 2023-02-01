@@ -15,7 +15,7 @@ public final class BinaryHelper {
 
     public static int readUnsignedShort(byte[] buf) {
         return ((buf[0] & 0xFF) << 8) +
-                ((buf[1] & 0xFF) << 0);
+                ((buf[1] & 0xFF));
     }
 
     public static short readShort(byte[] buf) {
@@ -24,7 +24,7 @@ public final class BinaryHelper {
 
     public static int readUnsignedLShort(byte[] buf) {
         return ((buf[1] & 0xFF) << 8) +
-                ((buf[0] & 0xFF) << 0);
+                ((buf[0] & 0xFF));
     }
 
     public static short readLShort(byte[] buf) {
@@ -53,14 +53,14 @@ public final class BinaryHelper {
         return ((buf[0] & 0xFF) << 24) +
                 ((buf[1] & 0xFF) << 16) +
                 ((buf[2] & 0xFF) << 8) +
-                ((buf[3] & 0xFF) << 0);
+                ((buf[3] & 0xFF));
     }
 
     public static int readLInt(byte[] buf) {
         return ((buf[3] & 0xFF) << 24) +
                 ((buf[2] & 0xFF) << 16) +
                 ((buf[1] & 0xFF) << 8) +
-                ((buf[0] & 0xFF) << 0);
+                ((buf[0] & 0xFF));
     }
 
     public static float readFloat(byte[] buf) {
@@ -79,7 +79,7 @@ public final class BinaryHelper {
                 ((long) (buf[4] & 0xFF) << 24) +
                 ((buf[5] & 0xFF) << 16) +
                 ((buf[6] & 0xFF) << 8) +
-                ((buf[7] & 0xFF) << 0);
+                ((buf[7] & 0xFF));
     }
 
     public static long readLLong(byte[] buf) {
@@ -90,7 +90,7 @@ public final class BinaryHelper {
                 ((long) (buf[3] & 0xFF) << 24) +
                 ((buf[2] & 0xFF) << 16) +
                 ((buf[1] & 0xFF) << 8) +
-                ((buf[0] & 0xFF) << 0);
+                ((buf[0] & 0xFF));
     }
 
     public static double readDouble(byte[] buf) {
@@ -114,7 +114,7 @@ public final class BinaryHelper {
 
         return new byte[]{
                 (byte) ((s >> 8) & 0xFF),
-                (byte) ((s >> 0) & 0xFF)
+                (byte) ((s) & 0xFF)
         };
     }
 
@@ -122,7 +122,7 @@ public final class BinaryHelper {
         s &= 0xFFFF;
 
         return new byte[]{
-                (byte) ((s >> 0) & 0xFF),
+                (byte) ((s) & 0xFF),
                 (byte) ((s >> 8) & 0xFF)
         };
     }
@@ -131,13 +131,13 @@ public final class BinaryHelper {
         return new byte[]{
                 (byte) ((t >> 16) & 0xFF),
                 (byte) ((t >> 8) & 0xFF),
-                (byte) ((t >> 0) & 0xFF)
+                (byte) ((t) & 0xFF)
         };
     }
 
     public static byte[] writeLTriad(int t) {
         return new byte[]{
-                (byte) ((t >> 0) & 0xFF),
+                (byte) ((t) & 0xFF),
                 (byte) ((t >> 8) & 0xFF),
                 (byte) ((t >> 16) & 0xFF)
         };
@@ -148,13 +148,13 @@ public final class BinaryHelper {
                 (byte) ((i >> 24) & 0xFF),
                 (byte) ((i >> 16) & 0xFF),
                 (byte) ((i >> 8) & 0xFF),
-                (byte) ((i >> 0) & 0xFF)
+                (byte) ((i) & 0xFF)
         };
     }
 
     public static byte[] writeLInt(int i) {
         return new byte[]{
-                (byte) ((i >> 0) & 0xFF),
+                (byte) ((i) & 0xFF),
                 (byte) ((i >> 8) & 0xFF),
                 (byte) ((i >> 16) & 0xFF),
                 (byte) ((i >> 24) & 0xFF)
@@ -177,13 +177,13 @@ public final class BinaryHelper {
                 (byte) ((l >> 24) & 0xFF),
                 (byte) ((l >> 16) & 0xFF),
                 (byte) ((l >> 8) & 0xFF),
-                (byte) ((l >> 0) & 0xFF)
+                (byte) ((l) & 0xFF)
         };
     }
 
     public static byte[] writeLLong(long l) {
         return new byte[]{
-                (byte) ((l >> 0) & 0xFF),
+                (byte) ((l) & 0xFF),
                 (byte) ((l >> 8) & 0xFF),
                 (byte) ((l >> 16) & 0xFF),
                 (byte) ((l >> 24) & 0xFF),

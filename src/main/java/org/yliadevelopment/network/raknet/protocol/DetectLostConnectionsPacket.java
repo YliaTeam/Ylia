@@ -2,28 +2,21 @@ package org.yliadevelopment.network.raknet.protocol;
 
 import org.yliadevelopment.network.raknet.RaknetPacket;
 
-public class ConnectedPingPacket extends RaknetPacket {
-    
-    public static final int NETWORK_ID = 0x00;
+public class DetectLostConnectionsPacket extends RaknetPacket {
 
-    private long time;
+    public static final int NETWORK_ID = 0x04;
 
-    public ConnectedPingPacket(byte[] buffer) {
+    public DetectLostConnectionsPacket(byte[] buffer) {
         super(buffer);
     }
 
     @Override
     public void encode() {
         this.resetPointer();
-
-        this.writeLong(this.time);
     }
 
     @Override
     public void decode() {
         this.resetOffset();
-
-        this.time = this.readLong();
     }
-
 }
