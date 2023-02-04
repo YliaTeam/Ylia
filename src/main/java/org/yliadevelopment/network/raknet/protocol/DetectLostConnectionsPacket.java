@@ -4,10 +4,10 @@ import org.yliadevelopment.network.raknet.RaknetPacket;
 
 public class DetectLostConnectionsPacket extends RaknetPacket {
 
-    public static final int NETWORK_ID = 0x04;
+    public static final byte NETWORK_ID = (byte) 0x04;
 
-    public DetectLostConnectionsPacket(byte[] buffer) {
-        super(buffer);
+    public DetectLostConnectionsPacket() {
+        super(new byte[] {NETWORK_ID});
     }
 
     @Override

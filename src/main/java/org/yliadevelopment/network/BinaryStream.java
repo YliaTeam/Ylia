@@ -1,6 +1,7 @@
 package org.yliadevelopment.network;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class BinaryStream {
 
@@ -8,8 +9,10 @@ public class BinaryStream {
     private int pointer = 0x00;
     private byte[] buffer;
 
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
     public BinaryStream() {
-        this(new byte[0xff], 0x00);
+        this(new byte[0x00], 0x00);
     }
 
     public BinaryStream(byte[] buffer) {
@@ -147,6 +150,8 @@ public class BinaryStream {
     }
 
     public void write(byte[] buf) {
+        this.ensureCapacity(this.pointer + buf.length);
+
         for (byte b : buf) {
             this.write(b);
         }
@@ -214,6 +219,19 @@ public class BinaryStream {
 
         this.writeLInt(size);
         this.write(data);
+    }
+
+    private void ensureCapacity(int byteCount) {
+        if (byteCount - this.buffer.length > 0) {
+            grow(byteCount);
+        }
+    }
+
+    private void grow(int byteCount) {
+        int oldCapacity = buffer.length;
+        int newCapacity = oldCapacity + byteCount;
+
+        this.buffer = Arrays.copyOf(buffer, newCapacity);
     }
 
 }

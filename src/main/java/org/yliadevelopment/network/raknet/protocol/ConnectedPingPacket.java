@@ -4,12 +4,12 @@ import org.yliadevelopment.network.raknet.RaknetPacket;
 
 public class ConnectedPingPacket extends RaknetPacket {
     
-    public static final int NETWORK_ID = 0x00;
+    public static final byte NETWORK_ID = (byte) 0x00;
 
     private long time;
 
-    public ConnectedPingPacket(byte[] buffer) {
-        super(buffer);
+    public ConnectedPingPacket() {
+        super(new byte[] {NETWORK_ID});
     }
 
     @Override

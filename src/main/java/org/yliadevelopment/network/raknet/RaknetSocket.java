@@ -15,25 +15,35 @@ public class RaknetSocket {
 
     static MainLogger logger = MainLogger.get();
 
-    private SocketAddress address;
+    private final SocketAddress address;
     private DatagramSocket socket;
 
     public RaknetSocket(SocketAddress address) {
         this.address = address;
         
         try {
-            this.socket = new DatagramSocket(address);
-        } catch (SocketException exception) {
-            logger.error("Could not create datagram socket: %s", exception.toString());
+            this.socket = new DatagramSocket(null);
+
+            this.socket.setReuseAddress(true);
+            this.socket.setBroadcast(true);
+
+            this.socket.setOption(StandardSocketOptions.SO_SNDBUF, 1);
+            this.socket.setOption(StandardSocketOptions.SO_RCVBUF, 1);
+            this.socket.setOption(StandardSocketOptions.SO_REUSEADDR, true);
+            this.socket.setOption(StandardSocketOptions.SO_REUSEPORT, true);
+
+            this.socket.bind(address);
+        } catch (Exception exception) {
+            logger.error("Could not create or bind socket!: %s", exception.toString());
         }
     }
 
     public void sendPacket(@NotNull RaknetPacket raknetPacket) {
+        raknetPacket.encode();
+
         var packet = new DatagramPacket(raknetPacket.getBuffer(), raknetPacket.getBuffer().length);
         packet.setAddress(raknetPacket.getAddress());
         packet.setPort(raknetPacket.getPort());
-
-        raknetPacket.encode();
 
         logger.info("Trying to send %s packet to address %s:%d", raknetPacket.getClass().getName(),
                 raknetPacket.getAddress().getHostAddress(),
@@ -62,7 +72,7 @@ public class RaknetSocket {
 
             var stream = new BinaryStream(buffer);
 
-            var packetId = stream.readUnsignedByte();
+            var packetId = (byte) stream.readUnsignedByte();
 
             if (!RaknetPacket.PACKETS.containsKey(packetId)) {
                 logger.error("Packet id not handled: %d", packetId);
@@ -74,8 +84,10 @@ public class RaknetSocket {
 
             try {
                 raknetPacket = raknetPacketClazz
-                    .getConstructor(byte[].class)
-                    .newInstance((Object) buffer);
+                    .getConstructor()
+                    .newInstance();
+
+                raknetPacket.setBuffer(buffer);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 logger.error("Could not instantiate %s: %s", raknetPacketClazz.getName(), e.toString());

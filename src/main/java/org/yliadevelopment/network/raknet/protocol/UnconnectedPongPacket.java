@@ -4,7 +4,7 @@ import org.yliadevelopment.network.raknet.RaknetPacket;
 
 public class UnconnectedPongPacket extends RaknetPacket {
 
-    public static final int NETWORK_ID = 0x1c;
+    public static final byte NETWORK_ID = (byte) 0x1c;
 
     public long pingId;
     public long serverId;
@@ -16,8 +16,8 @@ public class UnconnectedPongPacket extends RaknetPacket {
     };
     public String serverName;
 
-    public UnconnectedPongPacket(byte[] buffer) {
-        super(buffer);
+    public UnconnectedPongPacket() {
+        super(new byte[] {NETWORK_ID});
     }
 
     @Override

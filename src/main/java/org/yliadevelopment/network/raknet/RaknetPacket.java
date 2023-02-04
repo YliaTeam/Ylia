@@ -13,7 +13,7 @@ public abstract class RaknetPacket extends BinaryStream {
 
     static MainLogger logger = MainLogger.get();
 
-    public static final Map<Integer, Class<? extends RaknetPacket>> PACKETS = new LinkedHashMap<>();
+    public static final Map<Byte, Class<? extends RaknetPacket>> PACKETS = new LinkedHashMap<>();
 
     static {
         for (Class<? extends RaknetPacket> clazz : new Reflections(RaknetPacket.class.getPackageName())
@@ -28,7 +28,7 @@ public abstract class RaknetPacket extends BinaryStream {
 
                 idField.setAccessible(true);
 
-                var id = (int) idField.get(null);
+                var id = (byte) idField.get(null);
 
                 PACKETS.put(id, clazz);
             } catch (NoSuchFieldException | IllegalAccessException | SecurityException | IllegalArgumentException e) {

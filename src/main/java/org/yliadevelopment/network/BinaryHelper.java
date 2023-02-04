@@ -173,6 +173,7 @@ public final class BinaryHelper {
         return new byte[]{
                 (byte) ((l >> 56) & 0xFF),
                 (byte) ((l >> 48) & 0xFF),
+                (byte) ((l >> 40) & 0xFF),
                 (byte) ((l >> 32) & 0xFF),
                 (byte) ((l >> 24) & 0xFF),
                 (byte) ((l >> 16) & 0xFF),
