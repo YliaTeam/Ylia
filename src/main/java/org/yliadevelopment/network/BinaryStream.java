@@ -156,7 +156,7 @@ public class BinaryStream {
         this.write(BinaryHelper.writeBoolean(b));
     }
 
-    public void writeUnsignedByte(byte b) {
+    public void writeUnsignedByte(int b) {
         this.write(BinaryHelper.writeUnsignedByte(b));
     }
 

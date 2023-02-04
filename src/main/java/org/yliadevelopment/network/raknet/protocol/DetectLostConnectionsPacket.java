@@ -12,6 +12,7 @@ public class DetectLostConnectionsPacket extends RaknetPacket {
 
     @Override
     public void encode() {
+        this.writeUnsignedByte(NETWORK_ID);
         this.resetPointer();
     }
 

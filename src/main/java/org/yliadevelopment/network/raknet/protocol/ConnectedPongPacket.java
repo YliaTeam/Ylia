@@ -16,6 +16,7 @@ public class ConnectedPongPacket extends RaknetPacket {
     public void encode() {
         this.resetPointer();
 
+        this.writeUnsignedByte(NETWORK_ID);
         this.writeLong(this.pingTime);
         this.writeLong(this.pongTime);
     }

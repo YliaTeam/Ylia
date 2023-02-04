@@ -1,18 +1,15 @@
 package org.yliadevelopment.network.raknet;
 
-import java.net.DatagramSocket;
-import java.net.SocketAddress;
-import java.net.SocketException;
+import java.net.*;
 
 import org.jetbrains.annotations.NotNull;
 import org.yliadevelopment.logger.MainLogger;
+import org.yliadevelopment.network.BinaryHelper;
 import org.yliadevelopment.network.BinaryStream;
 import org.yliadevelopment.network.raknet.handler.PacketHandler;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.net.DatagramPacket;
 
 public class RaknetSocket {
 
@@ -31,10 +28,23 @@ public class RaknetSocket {
         }
     }
 
-    public void sendPacket(RaknetPacket raknetPacket, SocketAddress address) {
+    public void sendPacket(@NotNull RaknetPacket raknetPacket) {
         var packet = new DatagramPacket(raknetPacket.getBuffer(), raknetPacket.getBuffer().length);
+        packet.setAddress(raknetPacket.getAddress());
+        packet.setPort(raknetPacket.getPort());
 
-        this.socket.send(packet);
+        raknetPacket.encode();
+
+        logger.info("Trying to send %s packet to address %s:%d", raknetPacket.getClass().getName(),
+                raknetPacket.getAddress().getHostAddress(),
+                raknetPacket.getPort());
+        logger.info("Packet buffer: %s", new String(raknetPacket.getBuffer()));
+
+        try {
+            this.socket.send(packet);
+        } catch (IOException e) {
+            logger.error("Could not send packet %s: %s", raknetPacket.getClass().getName(), e.toString());
+        }
     }
 
     public void startListening() {
@@ -72,6 +82,7 @@ public class RaknetSocket {
                 continue;
             }
 
+            raknetPacket.setAddress(packet.getAddress(), packet.getPort());
             raknetPacket.decode();
 
             PacketHandler.invokeHandlerFor(this, raknetPacket);

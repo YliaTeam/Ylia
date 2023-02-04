@@ -5,6 +5,7 @@ import org.yliadevelopment.logger.MainLogger;
 import org.yliadevelopment.network.BinaryStream;
 
 import java.lang.reflect.Modifier;
+import java.net.InetAddress;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,8 +37,20 @@ public abstract class RaknetPacket extends BinaryStream {
         }
     }
 
-    public RaknetPacket() {
-        super(new byte[0x200]);
+    private InetAddress address;
+    private int port;
+
+    public InetAddress getAddress() {
+        return this.address;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setAddress(InetAddress address, int port) {
+        this.address = address;
+        this.port = port;
     }
 
     public RaknetPacket(byte[] buffer) {

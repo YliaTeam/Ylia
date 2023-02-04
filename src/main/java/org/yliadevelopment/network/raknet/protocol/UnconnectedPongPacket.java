@@ -24,6 +24,7 @@ public class UnconnectedPongPacket extends RaknetPacket {
     public void encode() {
         this.resetPointer();
 
+        this.writeUnsignedByte(NETWORK_ID);
         this.writeLong(this.pingId);
         this.writeLong(this.serverId);
         this.write(this.offlineMessageDataId);
